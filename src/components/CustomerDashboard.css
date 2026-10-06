@@ -1,0 +1,1229 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+:root {
+  --customer-blue: #071b45;
+  --customer-orange: #ff8a00;
+  --customer-bg: #f5f7fb;
+  --customer-text: #101828;
+  --customer-gray: #667085;
+  --customer-border: #e4e7ec;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+.customer-dashboard {
+  min-height: 100vh;
+
+  display: flex;
+
+  background: var(--customer-bg);
+
+  font-family: "DM Sans", sans-serif;
+}
+
+/* SIDEBAR */
+
+.customer-sidebar {
+  width: 245px;
+
+  min-height: 100vh;
+
+  background: var(--customer-blue);
+
+  padding: 25px 15px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  flex-shrink: 0;
+}
+
+.customer-logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 5px 10px 30px;
+}
+
+.customer-logo-icon {
+  width: 43px;
+  height: 43px;
+
+  border-radius: 11px;
+
+  background: var(--customer-orange);
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.customer-logo h2 {
+  margin: 0;
+
+  color: white;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 22px;
+}
+
+.customer-logo span {
+  display: block;
+
+  color: #92a3c2;
+
+  font-size: 9px;
+
+  margin-top: 2px;
+}
+
+.customer-menu-title {
+  color: #7184a6;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  padding: 0 12px 9px;
+}
+
+.customer-menu {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.customer-menu-item {
+  width: 100%;
+  height: 43px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #aebbd0;
+
+  border-radius: 7px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 0 12px;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+.customer-menu-item:hover {
+  background: rgba(255,255,255,0.06);
+
+  color: white;
+}
+
+.customer-menu-item.active {
+  background: var(--customer-orange);
+
+  color: white;
+}
+
+.customer-menu-item span {
+  width: 19px;
+
+  text-align: center;
+}
+
+.customer-sidebar-bottom {
+  margin-top: auto;
+
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  padding-top: 12px;
+}
+
+/* MAIN */
+
+.customer-main {
+  flex: 1;
+
+  min-width: 0;
+}
+
+/* HEADER */
+
+.customer-header {
+  height: 82px;
+
+  background: white;
+
+  border-bottom: 1px solid var(--customer-border);
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 32px;
+}
+
+.customer-header h1 {
+  margin: 0 0 3px;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  color: var(--customer-blue);
+
+  font-size: 23px;
+}
+
+.customer-header p {
+  margin: 0;
+
+  color: var(--customer-gray);
+
+  font-size: 11px;
+}
+
+.customer-profile {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.customer-avatar {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: #eaf0fa;
+
+  color: var(--customer-blue);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+}
+
+.customer-profile strong {
+  display: block;
+
+  font-size: 11px;
+}
+
+.customer-profile span {
+  display: block;
+
+  color: var(--customer-gray);
+
+  font-size: 9px;
+
+  margin-top: 2px;
+}
+
+/* CONTENT */
+
+.customer-content {
+  padding: 28px 32px 40px;
+}
+
+.customer-welcome {
+  background: var(--customer-blue);
+
+  border-radius: 11px;
+
+  padding: 25px;
+
+  color: white;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+.welcome-label {
+  color: #ffb35c;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+}
+
+.customer-welcome h2 {
+  margin: 8px 0;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 23px;
+}
+
+.customer-welcome p {
+  max-width: 620px;
+
+  color: #b8c5da;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+
+  margin: 0 0 18px;
+}
+
+.customer-welcome button {
+  border: none;
+
+  background: var(--customer-orange);
+
+  color: white;
+
+  padding: 10px 15px;
+
+  border-radius: 6px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.application-number {
+  min-width: 180px;
+
+  align-self: center;
+
+  padding: 17px;
+
+  border: 1px solid rgba(255,255,255,0.13);
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+}
+
+.application-number span,
+.application-number small {
+  display: block;
+
+  color: #9eafc9;
+
+  font-size: 8px;
+}
+
+.application-number strong {
+  display: block;
+
+  margin: 7px 0;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  font-size: 19px;
+}
+
+/* CARD */
+
+.customer-card {
+  margin-top: 18px;
+
+  background: white;
+
+  border: 1px solid var(--customer-border);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.customer-card-header {
+  padding: 18px;
+
+  border-bottom: 1px solid #f0f2f5;
+
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.customer-card-header h3 {
+  margin: 0 0 4px;
+
+  font-family: "Space Grotesk", sans-serif;
+
+  color: var(--customer-blue);
+
+  font-size: 14px;
+}
+
+.customer-card-header p {
+  margin: 0;
+
+  color: var(--customer-gray);
+
+  font-size: 9px;
+}
+
+.customer-card-header button {
+  border: none;
+
+  background: transparent;
+
+  color: var(--customer-orange);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* PROGRESS */
+
+.application-progress {
+  padding: 25px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  overflow-x: auto;
+}
+
+.progress-step {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  width: 150px;
+
+  flex-shrink: 0;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  border: 2px solid #d0d5dd;
+
+  color: #98a2b3;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  background: white;
+
+  z-index: 2;
+}
+
+.progress-step.completed .step-circle {
+  background: #12b76a;
+
+  border-color: #12b76a;
+
+  color: white;
+}
+
+.progress-step.active-step .step-circle {
+  background: var(--customer-orange);
+
+  border-color: var(--customer-orange);
+
+  color: white;
+}
+
+.progress-step strong {
+  margin-top: 9px;
+
+  font-size: 9px;
+
+  color: #344054;
+}
+
+.progress-step span {
+  margin-top: 3px;
+
+  font-size: 8px;
+
+  color: #98a2b3;
+}
+
+.progress-line {
+  height: 2px;
+
+  flex: 1;
+
+  min-width: 30px;
+
+  background: #e4e7ec;
+
+  margin-top: 14px;
+}
+
+.completed-line {
+  background: #12b76a;
+}
+
+/* GRID */
+
+.customer-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.customer-grid .customer-card {
+  margin-top: 18px;
+}
+
+/* DOCUMENTS */
+
+.document-list {
+  padding: 5px 18px 10px;
+}
+
+.document-item {
+  min-height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-bottom: 1px solid #f2f4f7;
+}
+
+.document-item:last-child {
+  border-bottom: none;
+}
+
+.document-icon {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 7px;
+
+  background: #eef3fb;
+
+  color: var(--customer-blue);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 8px;
+
+  font-weight: 700;
+}
+
+.document-item div {
+  flex: 1;
+}
+
+.document-item strong {
+  display: block;
+
+  font-size: 10px;
+}
+
+.document-item div span {
+  display: block;
+
+  color: #98a2b3;
+
+  font-size: 8px;
+
+  margin-top: 3px;
+}
+
+.document-item b {
+  font-size: 8px;
+}
+
+.verified {
+  color: #039855;
+}
+
+.pending {
+  color: #b54708;
+}
+
+/* BUSINESS */
+
+.business-detail {
+  padding: 5px 18px 15px;
+}
+
+.business-detail div {
+  padding: 12px 0;
+
+  border-bottom: 1px solid #f2f4f7;
+}
+
+.business-detail span {
+  display: block;
+
+  color: #98a2b3;
+
+  font-size: 8px;
+}
+
+.business-detail strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #344054;
+
+  font-size: 10px;
+}
+
+/* COMING */
+
+.customer-coming {
+  min-height: calc(100vh - 82px);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  text-align: center;
+}
+
+.customer-coming > div {
+  width: 60px;
+  height: 60px;
+
+  background: #eef3fb;
+
+  color: var(--customer-blue);
+
+  border-radius: 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+}
+
+.customer-coming h2 {
+  font-family: "Space Grotesk", sans-serif;
+
+  color: var(--customer-blue);
+}
+
+.customer-coming p {
+  color: var(--customer-gray);
+
+  font-size: 12px;
+}
+
+.customer-coming button {
+  border: none;
+
+  background: var(--customer-blue);
+
+  color: white;
+
+  padding: 10px 15px;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .customer-sidebar {
+    width: 210px;
+  }
+
+  .customer-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 700px) {
+
+  .customer-sidebar {
+    display: none;
+  }
+
+  .customer-header {
+    padding: 0 18px;
+  }
+
+  .customer-profile div:last-child {
+    display: none;
+  }
+
+  .customer-content {
+    padding: 18px;
+  }
+
+  .customer-welcome {
+    flex-direction: column;
+  }
+
+  .application-number {
+    width: 100%;
+  }
+
+}
+/* ================================================= */
+/* CERTIFICATE QUICK CARD */
+/* ================================================= */
+
+.customer-certificate-card {
+  margin-top: 22px;
+  padding: 24px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #f7faff 100%
+  );
+  border: 1px solid #dce5f2;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 10px 30px rgba(7, 27, 69, 0.07);
+}
+
+.certificate-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #071b45;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.certificate-card-content {
+  flex: 1;
+}
+
+.certificate-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #16834a;
+  margin-bottom: 5px;
+}
+
+.certificate-card-content h3 {
+  margin: 0 0 5px;
+  color: #071b45;
+  font-size: 19px;
+}
+
+.certificate-card-content p {
+  margin: 0;
+  color: #667085;
+  font-size: 13px;
+}
+
+.certificate-card-content p strong {
+  color: #071b45;
+}
+
+.certificate-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.certificate-view-btn,
+.certificate-download-btn {
+  border: none;
+  padding: 11px 17px;
+  border-radius: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.certificate-view-btn {
+  background: #071b45;
+  color: #ffffff;
+}
+
+.certificate-view-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+.certificate-download-btn {
+  background: #ff8a00;
+  color: #ffffff;
+}
+
+.certificate-download-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+/* ================================================= */
+/* CERTIFICATE PAGE */
+/* ================================================= */
+
+.certificate-empty-card,
+.certificate-main-card {
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 12px 35px rgba(7, 27, 69, 0.06);
+}
+
+.certificate-empty-card {
+  text-align: center;
+  max-width: 700px;
+  margin: 30px auto;
+}
+
+.certificate-empty-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #fff4df;
+  color: #ff8a00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.certificate-empty-card h2 {
+  margin: 0 0 10px;
+  color: #071b45;
+}
+
+.certificate-empty-card p {
+  color: #667085;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.certificate-status-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  background: #f5f7fb;
+}
+
+.certificate-status-box span {
+  font-size: 12px;
+  color: #667085;
+}
+
+.certificate-status-box strong {
+  color: #071b45;
+}
+
+.certificate-empty-card button {
+  border: none;
+  background: #071b45;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ================================================= */
+/* CERTIFICATE SUCCESS */
+/* ================================================= */
+
+.certificate-success {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.certificate-success-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #e9f8ef;
+  color: #16834a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.certificate-success span {
+  color: #16834a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.certificate-success h2 {
+  margin: 5px 0;
+  color: #071b45;
+}
+
+.certificate-success p {
+  margin: 0;
+  color: #667085;
+}
+
+/* ================================================= */
+/* CERTIFICATE DETAILS */
+/* ================================================= */
+
+.certificate-details-grid {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.certificate-details-grid > div {
+  padding: 17px;
+  border: 1px solid #e3e8ef;
+  border-radius: 12px;
+  background: #fafbfd;
+}
+
+.certificate-details-grid span {
+  display: block;
+  color: #667085;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.certificate-details-grid strong {
+  display: block;
+  color: #071b45;
+  font-size: 15px;
+  word-break: break-word;
+}
+
+/* ================================================= */
+/* CERTIFICATE BUTTONS */
+/* ================================================= */
+
+.certificate-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.certificate-primary-btn,
+.certificate-secondary-btn {
+  border: none;
+  padding: 13px 22px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.certificate-primary-btn {
+  background: #071b45;
+  color: #ffffff;
+}
+
+.certificate-secondary-btn {
+  background: #ff8a00;
+  color: #ffffff;
+}
+
+.certificate-primary-btn:hover,
+.certificate-secondary-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* ================================================= */
+/* QR INFO */
+/* ================================================= */
+
+.certificate-qr-info {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #e8edf3;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.certificate-qr-placeholder {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #d9e0e9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.certificate-qr-placeholder img {
+  width: 92px;
+  height: 92px;
+  object-fit: contain;
+}
+
+.certificate-qr-info h3 {
+  margin: 0 0 7px;
+  color: #071b45;
+  font-size: 16px;
+}
+
+.certificate-qr-info p {
+  margin: 0;
+  color: #667085;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ================================================= */
+/* MOBILE */
+/* ================================================= */
+
+@media (max-width: 768px) {
+  .customer-certificate-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .certificate-card-actions {
+    width: 100%;
+  }
+
+  .certificate-view-btn,
+  .certificate-download-btn {
+    flex: 1;
+  }
+
+  .certificate-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-actions {
+    flex-direction: column;
+  }
+
+  .certificate-primary-btn,
+  .certificate-secondary-btn {
+    width: 100%;
+  }
+
+  .certificate-qr-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .certificate-main-card {
+    padding: 22px;
+  }
+}
+
+/* =========================================
+   CUSTOMER APPLICATION FORM
+========================================= */
+
+.customer-loading {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.customer-alert {
+  margin: 20px 30px 0;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.customer-alert.error {
+  background: #fff0f0;
+  color: #b42318;
+  border: 1px solid #f5c2c0;
+}
+
+.customer-alert.success {
+  background: #ecfdf3;
+  color: #067647;
+  border: 1px solid #abefc6;
+}
+
+.application-form-card {
+  max-width: 1100px;
+}
+
+.application-form-card form h4 {
+  margin: 28px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8edf3;
+  color: #172b4d;
+  font-size: 16px;
+}
+
+.application-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.application-form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #344054;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.application-form-grid input,
+.application-form-grid select,
+.application-form-grid textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  background: #fff;
+  color: #172b4d;
+  font: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.application-form-grid textarea {
+  resize: vertical;
+}
+
+.application-form-grid input:focus,
+.application-form-grid select:focus,
+.application-form-grid textarea:focus {
+  border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.12);
+}
+
+.form-full-width {
+  grid-column: 1 / -1;
+}
+
+.application-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.application-form-actions button {
+  min-height: 45px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 7px;
+  background: #f28c28;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.application-form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+  .application-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-full-width {
+    grid-column: auto;
+  }
+
+  .customer-alert {
+    margin: 15px;
+  }
+
+  .application-form-actions button {
+    width: 100%;
+  }
+}
