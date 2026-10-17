@@ -708,7 +708,7 @@ button {
 @media (max-width: 700px) {
 
   .customer-sidebar {
-    display: none;
+    display: flex;
   }
 
   .customer-header {
