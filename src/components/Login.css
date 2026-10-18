@@ -601,3 +601,44 @@ input {
   }
 
 }
+
+/* Full Login Page Blue Background */
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #071B45 !important;
+}
+
+/* Login Container */
+.login-container {
+  min-height: 100vh;
+  background: #071B45 !important;
+}
+
+/* Left Side Blue */
+.login-left {
+  background: #071B45 !important;
+  color: #ffffff;
+}
+
+/* Right Side Blue */
+.login-right {
+  background: #071B45 !important;
+}
+
+/* Login Card */
+.login-card {
+  background: #071B45;
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+/* Mobile Background */
+@media (max-width: 768px) {
+  .login-page,
+  .login-container,
+  .login-left,
+  .login-right {
+    background: #071B45 !important;
+  }
+}
