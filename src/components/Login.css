@@ -602,43 +602,99 @@ input {
 
 }
 
-/* Full Login Page Blue Background */
+/* FORCE FULL LOGIN PAGE BLUE BACKGROUND */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  background-color: #071B45 !important;
+}
+
 .login-page {
   min-height: 100vh;
   width: 100%;
   background: #071B45 !important;
+  font-family: "DM Sans", sans-serif;
 }
 
-/* Login Container */
 .login-container {
   min-height: 100vh;
+  width: 100%;
+  display: flex;
   background: #071B45 !important;
 }
 
-/* Left Side Blue */
 .login-left {
   background: #071B45 !important;
   color: #ffffff;
 }
 
-/* Right Side Blue */
 .login-right {
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
   background: #071B45 !important;
 }
 
-/* Login Card */
+/* Blue login form card */
 .login-card {
-  background: #071B45;
-  color: #ffffff;
+  width: 100%;
+  max-width: 430px;
+  padding: 30px;
+  background: #071B45 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* Mobile Background */
-@media (max-width: 768px) {
-  .login-page,
-  .login-container,
-  .login-left,
-  .login-right {
+/* White text on blue card */
+.login-heading h1,
+.login-heading p,
+.form-group label,
+.remember,
+.customer-help p,
+.secure-login {
+  color: #ffffff !important;
+}
+
+/* Inputs stay white for readability */
+.input-wrapper input {
+  background: #ffffff !important;
+  color: #101828 !important;
+}
+
+/* Customer help box */
+.customer-help {
+  background: #12346d !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .login-container {
+    display: block;
     background: #071B45 !important;
+  }
+
+  .login-right {
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    background: #071B45 !important;
+  }
+
+  .login-card {
+    max-width: 430px;
+    margin: 0 auto;
+  }
+
+  .mobile-logo h2 {
+    color: #ffffff !important;
   }
 }
