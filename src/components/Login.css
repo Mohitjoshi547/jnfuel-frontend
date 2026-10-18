@@ -850,3 +850,29 @@ body,
   background: #fff1f0 !important;
   color: #c62828 !important;
 }
+
+.customer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.customer-logo-image {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.customer-logo h2 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.customer-logo span {
+  display: block;
+  color: #aebbd2;
+  font-size: 11px;
+  margin-top: 3px;
+}
