@@ -698,3 +698,155 @@ body,
     color: #ffffff !important;
   }
 }
+
+/* ===== JNFUEL BLUE + WHITE + ORANGE THEME ===== */
+
+:root {
+  --login-blue: #071b45;
+  --login-blue-light: #12346d;
+  --login-orange: #ff8a00;
+  --login-white: #ffffff;
+}
+
+/* Main text */
+.login-left,
+.login-left-content,
+.login-brand,
+.login-brand h2,
+.login-features strong,
+.left-footer {
+  color: #ffffff !important;
+}
+
+/* Highlight heading in orange */
+.login-left-content h1 span {
+  color: #ff8a00 !important;
+}
+
+/* Descriptions */
+.login-left-content > p {
+  color: #e1e9f5 !important;
+}
+
+.login-features p {
+  color: #c5d2e8 !important;
+}
+
+/* Orange icons and highlights */
+.brand-icon {
+  background: #ff8a00 !important;
+  color: #ffffff !important;
+}
+
+.feature-icon {
+  background: rgba(255, 138, 0, 0.18) !important;
+  color: #ff9d26 !important;
+}
+
+/* Right side and login card */
+.login-right,
+.login-card {
+  background: #071b45 !important;
+  color: #ffffff !important;
+}
+
+/* Login headings */
+.login-heading h1 {
+  color: #ffffff !important;
+}
+
+.login-heading p,
+.form-group label {
+  color: #e1e9f5 !important;
+}
+
+/* Admin / Partner tabs */
+.login-tabs {
+  background: #12346d !important;
+}
+
+.login-tabs button {
+  color: #ffffff !important;
+}
+
+.login-tabs button.active {
+  background: #ff8a00 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Input fields remain white */
+.input-wrapper input {
+  background: #ffffff !important;
+  color: #071b45 !important;
+  border: 1px solid #d0d5dd !important;
+}
+
+.input-wrapper input::placeholder {
+  color: #667085 !important;
+}
+
+.input-icon {
+  color: #ff8a00 !important;
+}
+
+.password-toggle,
+.forgot-password {
+  color: #ff9d26 !important;
+}
+
+/* Sign in button orange */
+.signin-button {
+  background: #ff8a00 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.signin-button:hover {
+  background: #e87900 !important;
+}
+
+/* Apply for JNFuel */
+.customer-help {
+  background: #12346d !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.customer-help p {
+  color: #ffffff !important;
+}
+
+.customer-help button {
+  color: #ff9d26 !important;
+}
+
+/* Security text */
+.secure-login {
+  color: #d1dced !important;
+}
+
+/* Mobile logo */
+.mobile-logo h2 {
+  color: #ffffff !important;
+}
+
+/* Remember checkbox */
+.remember {
+  color: #ffffff !important;
+}
+
+.remember input {
+  accent-color: #ff8a00 !important;
+}
+
+/* Focus effect */
+.input-wrapper input:focus {
+  border-color: #ff8a00 !important;
+  box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.2) !important;
+}
+
+/* Error message stays readable */
+.login-card [style*="fff1f0"] {
+  background: #fff1f0 !important;
+  color: #c62828 !important;
+}
