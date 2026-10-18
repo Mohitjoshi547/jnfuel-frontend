@@ -249,7 +249,18 @@ function Login() {
             {/* MOBILE LOGO */}
 
             <div className="mobile-logo">
-              <div className="brand-icon">JN</div>
+              <div className="customer-logo">
+                <img
+                  src="/jnfuellogo.png"
+                  alt="JN Fuel Logo"
+                  className="customer-logo-image"
+                />
+
+                <div>
+                  <h2>JNFuel</h2>
+                  <span>Fuel Business Solutions</span>
+                </div>
+              </div>
 
               <h2>JNFuel</h2>
             </div>
