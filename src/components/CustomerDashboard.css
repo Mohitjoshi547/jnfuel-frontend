@@ -1653,3 +1653,317 @@ button {
     width: 100px;
   }
 }
+/* =========================================
+   JNFUEL DASHBOARD - MOBILE LAYOUT FIX
+========================================= */
+
+@media (max-width: 768px) {
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: clip;
+  }
+
+  .customer-dashboard {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: clip;
+  }
+
+  /* Sidebar: horizontal navigation on mobile */
+  .customer-sidebar {
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    height: auto;
+    padding: 10px 12px;
+    display: block;
+  }
+
+  .customer-logo {
+    padding: 4px 0 12px;
+    gap: 9px;
+  }
+
+  .customer-logo-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .customer-logo h2 {
+    font-size: 19px;
+  }
+
+  .customer-logo span {
+    font-size: 9px;
+  }
+
+  .customer-menu-title,
+  .customer-sidebar-bottom {
+    display: none;
+  }
+
+  .customer-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    overflow-x: auto;
+    padding: 3px 0 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .customer-menu-item {
+    width: auto;
+    min-width: max-content;
+    height: 40px;
+    padding: 0 12px;
+    justify-content: center;
+    gap: 7px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .customer-menu-item span {
+    width: auto;
+  }
+
+  .customer-menu-item > * {
+    display: initial;
+  }
+
+  /* Main content */
+  .customer-main {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Header */
+  .customer-header {
+    width: 100%;
+    min-height: 68px;
+    height: auto;
+    padding: 12px 15px;
+    gap: 10px;
+  }
+
+  .customer-header h1 {
+    font-size: 19px;
+    line-height: 1.35;
+  }
+
+  .customer-header p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .customer-profile {
+    flex-shrink: 0;
+  }
+
+  .customer-profile div:last-child {
+    display: none;
+  }
+
+  .customer-avatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Dashboard content */
+  .customer-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 14px 28px;
+  }
+
+  .customer-welcome {
+    width: 100%;
+    padding: 20px 16px;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .customer-welcome h2 {
+    font-size: 21px;
+    line-height: 1.4;
+  }
+
+  .customer-welcome p {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .application-number {
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  /* Cards and grid */
+  .customer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .customer-card,
+  .customer-grid .customer-card {
+    width: 100%;
+    min-width: 0;
+    margin-top: 15px;
+  }
+
+  .customer-card-header {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  /* Progress bar can scroll horizontally */
+  .application-progress {
+    overflow-x: auto;
+    padding: 22px 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .progress-step {
+    width: 105px;
+    flex-shrink: 0;
+  }
+
+  .progress-line {
+    min-width: 18px;
+    flex: 1;
+  }
+
+  /* Certificate section */
+  .customer-certificate-card {
+    width: 100%;
+    min-width: 0;
+    padding: 18px 15px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .certificate-card-content {
+    min-width: 0;
+  }
+
+  .certificate-card-content h3 {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .certificate-card-content p {
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .certificate-card-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .certificate-view-btn,
+  .certificate-download-btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .certificate-empty-card,
+  .certificate-main-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 15px;
+    margin: 15px 0;
+  }
+
+  .certificate-details-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .certificate-actions {
+    flex-direction: column;
+  }
+
+  .certificate-primary-btn,
+  .certificate-secondary-btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .certificate-qr-info {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* Application form */
+  .application-form-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .application-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .application-form-grid input,
+  .application-form-grid select,
+  .application-form-grid textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .form-full-width {
+    grid-column: auto;
+  }
+
+  .application-form-actions button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .customer-alert {
+    margin: 12px 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .customer-coming {
+    min-height: 60vh;
+    padding: 20px 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .customer-content {
+    padding: 12px 10px 22px;
+  }
+
+  .customer-header {
+    padding: 11px 10px;
+  }
+
+  .customer-welcome {
+    padding: 16px 13px;
+  }
+
+  .customer-welcome h2 {
+    font-size: 19px;
+  }
+
+  .customer-menu-item {
+    padding: 0 10px;
+    font-size: 11px;
+  }
+}
