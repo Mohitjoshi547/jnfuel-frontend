@@ -1967,3 +1967,47 @@ button {
     font-size: 11px;
   }
 }
+
+/* JNFuel logo visibility and styling */
+.customer-sidebar .customer-logo {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 18px 16px;
+}
+
+.customer-sidebar .customer-logo-image {
+  display: block !important;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.customer-sidebar .customer-logo h2 {
+  color: #ffffff !important;
+  margin: 0;
+}
+
+.customer-sidebar .customer-logo span {
+  display: block;
+  color: #ff8a00 !important;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Mobile sidebar */
+@media (max-width: 768px) {
+  .customer-sidebar .customer-logo {
+    display: flex !important;
+  }
+
+  .customer-sidebar .customer-logo-image {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+}
+
