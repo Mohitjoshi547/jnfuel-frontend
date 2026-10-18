@@ -170,7 +170,18 @@ function Login() {
 
         <div className="login-left">
           <div className="login-brand">
-            <div className="brand-icon">JN</div>
+            <div className="customer-logo">
+              <img
+                src="/jnfuellogo.jpeg"
+                alt="JN Fuel Logo"
+                className="customer-logo-image"
+              />
+
+              <div>
+                <h2>JNFuel</h2>
+                <span>Fuel Business Solutions</span>
+              </div>
+            </div>
 
             <div>
               <h2>JNFuel</h2>
@@ -307,7 +318,9 @@ function Login() {
 
               <div className="form-group">
                 <label>
-                  {loginType === "admin" ? "User ID / mobile no." : "Customer ID"}
+                  {loginType === "admin"
+                    ? "User ID / mobile no."
+                    : "Customer ID"}
                 </label>
 
                 <div className="input-wrapper">
