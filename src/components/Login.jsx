@@ -251,7 +251,7 @@ function Login() {
             <div className="mobile-logo">
               <div className="customer-logo">
                 <img
-                  src="/jnfuellogo.png"
+                  src="/jnfuellogo.jpeg"
                   alt="JN Fuel Logo"
                   className="customer-logo-image"
                 />
