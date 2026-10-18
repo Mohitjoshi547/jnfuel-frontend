@@ -443,7 +443,11 @@ function CustomerDashboard() {
 
       <aside className="customer-sidebar">
         <div className="customer-logo">
-          <div className="customer-logo-icon">JN</div>
+          <img
+            src="/jnfuellogo.jpeg"
+            alt="JN Fuel Logo"
+            className="customer-logo-image"
+          />
           <div>
             <h2>JNFuel</h2>
             <span>Partner Portal</span>
@@ -1061,38 +1065,35 @@ function CustomerDashboard() {
           </div>
         )}
 
-       {/* AGREEMENT */}
+        {/* AGREEMENT */}
 
-{application && activeMenu === "Agreement" && (
-  <div className="customer-content">
-    <Agreement
-      application={application}
-      onBack={() => setActiveMenu("Dashboard")}
-    />
-  </div>
-)}
+        {application && activeMenu === "Agreement" && (
+          <div className="customer-content">
+            <Agreement
+              application={application}
+              onBack={() => setActiveMenu("Dashboard")}
+            />
+          </div>
+        )}
 
-{/* OTHER SECTIONS */}
+        {/* OTHER SECTIONS */}
 
-{application &&
-  ![
-    "Dashboard",
-    "Certificate",
-    "My Application",
-    "Agreement",
-  ].includes(activeMenu) && (
-    <div className="customer-coming">
-      <div>⚙</div>
+        {application &&
+          !["Dashboard", "Certificate", "My Application", "Agreement"].includes(
+            activeMenu,
+          ) && (
+            <div className="customer-coming">
+              <div>⚙</div>
 
-      <h2>{activeMenu}</h2>
+              <h2>{activeMenu}</h2>
 
-      <p>This section UI will be added here.</p>
+              <p>This section UI will be added here.</p>
 
-      <button onClick={() => setActiveMenu("Dashboard")}>
-        ← Back to Dashboard
-      </button>
-    </div>
-  )}
+              <button onClick={() => setActiveMenu("Dashboard")}>
+                ← Back to Dashboard
+              </button>
+            </div>
+          )}
       </main>
     </div>
   );

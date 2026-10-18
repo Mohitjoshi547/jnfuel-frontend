@@ -262,7 +262,6 @@ function Login() {
                 </div>
               </div>
 
-              <h2>JNFuel</h2>
             </div>
 
             {/* HEADING */}
