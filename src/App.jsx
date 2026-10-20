@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
@@ -11,27 +6,19 @@ import CustomerDashboard from "./components/CustomerDashboard";
 import Apply from "./components/Apply";
 import ChangePassword from "./components/ChangePassword";
 import CertificateVerification from "./components/CertificateVerification";
+import SignAgreement from "./components/SignAgreement";
 
 /* ================================================= */
 /* ADMIN PROTECTED ROUTE */
 /* ================================================= */
 
 function AdminRoute({ children }) {
-  const token = localStorage.getItem(
-    "jnfuel_admin_token"
-  );
+  const token = localStorage.getItem("jnfuel_admin_token");
 
-  const role = localStorage.getItem(
-    "jnfuel_user_role"
-  );
+  const role = localStorage.getItem("jnfuel_user_role");
 
   if (!token || role !== "admin") {
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
+    return <Navigate to="/login" replace />;
   }
 
   return children;
@@ -47,9 +34,7 @@ function CustomerRoute({ children }) {
   const customer = localStorage.getItem("jnfuel_customer");
 
   if (!token || role !== "customer" || !customer) {
-    return (
-      <Navigate to="/login" replace />
-    );
+    return <Navigate to="/login" replace />;
   }
 
   return children;
@@ -63,36 +48,27 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* PUBLIC AGREEMENT SIGNING */}
+        <Route path="/sign-agreement/:token" element={<SignAgreement />} />
 
         {/* ================================================= */}
         {/* LOGIN */}
         {/* ================================================= */}
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
         {/* ================================================= */}
         {/* APPLY */}
         {/* ================================================= */}
 
-        <Route
-          path="/apply"
-          element={<Apply />}
-        />
+        <Route path="/apply" element={<Apply />} />
 
         {/* ================================================= */}
         {/* PUBLIC CERTIFICATE VERIFICATION */}
         {/* QR CODE IS SCANNED HERE */}
         {/* ================================================= */}
 
-        <Route
-          path="/verify/:token"
-          element={
-            <CertificateVerification />
-          }
-        />
+        <Route path="/verify/:token" element={<CertificateVerification />} />
 
         {/* ================================================= */}
         {/* ADMIN */}
@@ -111,10 +87,7 @@ function App() {
         {/* CHANGE PASSWORD */}
         {/* ================================================= */}
 
-        <Route
-          path="/change-password"
-          element={<ChangePassword />}
-        />
+        <Route path="/change-password" element={<ChangePassword />} />
 
         {/* ================================================= */}
         {/* CUSTOMER */}
@@ -133,30 +106,13 @@ function App() {
         {/* ROOT */}
         {/* ================================================= */}
 
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/login"
-              replace
-            />
-          }
-        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* ================================================= */}
         {/* UNKNOWN URL */}
         {/* ================================================= */}
 
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="/login"
-              replace
-            />
-          }
-        />
-
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
