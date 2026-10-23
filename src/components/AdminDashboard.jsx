@@ -307,46 +307,68 @@ function AdminDashboard() {
       setUpdatingId(null);
     }
   };
-  /* ================================================= */
-  /* SEND AGREEMENT TO CUSTOMER */
-  /* ================================================= */
+ /* ================================================= */
+/* GENERATE AGREEMENT AND SHOW SIGNING LINK */
+/* ================================================= */
 
-  const sendAgreement = async (applicationId) => {
-    try {
-      setUpdatingId(applicationId);
-      setError("");
+const sendAgreement = async (applicationId) => {
+  try {
+    setUpdatingId(applicationId);
+    setError("");
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/applications/${applicationId}/agreement/send`,
-        {
-          method: "POST",
-          headers: getAdminHeaders(),
-        },
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Agreement send nahi ho saka.");
+    const response = await fetch(
+      `${API_BASE_URL}/api/applications/${applicationId}/agreement/send`,
+      {
+        method: "POST",
+        headers: getAdminHeaders(),
       }
+    );
 
-      setApplications((current) =>
-        current.map((application) =>
-          application._id === applicationId ? data.application : application,
-        ),
-      );
+    const data = await response.json();
 
-      setSelectedApplication((current) =>
-        current && current._id === applicationId ? data.application : current,
-      );
-    } catch (err) {
-      console.error("Send Agreement Error:", err);
-
-      setError(err.message || "Agreement send nahi ho saka.");
-    } finally {
-      setUpdatingId(null);
+    if (!response.ok) {
+      throw new Error(data.message || "Agreement generate nahi ho saka.");
     }
-  };
+
+    if (!data.signingUrl) {
+      throw new Error("Signing link generate nahi hua. Backend response check karo.");
+    }
+
+    setApplications((current) =>
+      current.map((application) =>
+        application._id === applicationId
+          ? data.application
+          : application
+      )
+    );
+
+    setSelectedApplication((current) =>
+      current && current._id === applicationId
+        ? data.application
+        : current
+    );
+
+    // Link copy karne ki koshish karo.
+    try {
+      await navigator.clipboard.writeText(data.signingUrl);
+      alert(
+        "Agreement generate ho gaya!\n\nSigning link clipboard mein copy ho gaya hai.\nCustomer ko WhatsApp par share kar do:\n\n" +
+          data.signingUrl
+      );
+    } catch {
+      // Clipboard permission na mile toh link screen par dikhao.
+      window.prompt(
+        "Agreement generate ho gaya! Is link ko copy karke customer ko share karo:",
+        data.signingUrl
+      );
+    }
+  } catch (err) {
+    console.error("Generate Agreement Error:", err);
+    setError(err.message || "Agreement generate nahi ho saka.");
+  } finally {
+    setUpdatingId(null);
+  }
+};
   /* ================================================= */
   /* OPEN APPLICATION DETAILS */
   /* ================================================= */
