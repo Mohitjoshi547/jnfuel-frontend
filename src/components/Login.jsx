@@ -255,11 +255,6 @@ function Login() {
                   alt="JN Fuel Logo"
                   className="customer-logo-image"
                 />
-
-                <div>
-                  <h2>JNFuel</h2>
-                  <span>Fuel Business Solutions</span>
-                </div>
               </div>
 
             </div>
