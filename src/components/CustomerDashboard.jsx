@@ -13,6 +13,7 @@ const initialForm = {
   gender: "",
   mobile: "",
   email: "",
+  aadhaarNumber: "",
   businessName: "",
   businessModel: "",
   preferredLocation: "",
@@ -62,6 +63,18 @@ function CustomerDashboard() {
     ].forEach((key) => localStorage.removeItem(key));
   };
 
+  const maskAadhaar = (value) => {
+    if (!value) return "Not provided";
+
+    const digits = String(value).replace(/\D/g, "");
+
+    if (digits.length < 4) return "Not available";
+
+    return `XXXX-XXXX-${digits.slice(-4)}`;
+  };
+
+  /* LOAD APPLICATION */
+
   const loadApplication = useCallback(
     async (applicationNumber, token) => {
       const response = await fetch(
@@ -87,7 +100,37 @@ function CustomerDashboard() {
         throw new Error(data.message || "Application load nahi ho saki");
       }
 
-      setApplication(data.application);
+      const loadedApplication = data.application;
+
+      setApplication(loadedApplication);
+
+      // Populate form fields from the saved application.
+      // Aadhaar is only populated if the backend returns it.
+      setForm((previous) => ({
+        ...previous,
+        applicantName:
+          loadedApplication.applicantName || previous.applicantName,
+        fatherName: loadedApplication.fatherName || previous.fatherName,
+        dateOfBirth: loadedApplication.dateOfBirth
+          ? String(loadedApplication.dateOfBirth).slice(0, 10)
+          : previous.dateOfBirth,
+        gender: loadedApplication.gender || previous.gender,
+        mobile: loadedApplication.mobile || previous.mobile,
+        email: loadedApplication.email || previous.email,
+        aadhaarNumber:
+          loadedApplication.aadhaarNumber || previous.aadhaarNumber,
+        businessName: loadedApplication.businessName || previous.businessName,
+        businessModel:
+          loadedApplication.businessModel || previous.businessModel,
+        preferredLocation:
+          loadedApplication.preferredLocation || previous.preferredLocation,
+        address: {
+          ...previous.address,
+          ...(loadedApplication.address || {}),
+        },
+        remarks: loadedApplication.remarks || previous.remarks,
+      }));
+
       setError("");
     },
     [navigate],
@@ -136,7 +179,6 @@ function CustomerDashboard() {
         setCustomer(customerInfo);
 
         localStorage.setItem("jnfuel_user", JSON.stringify(customerInfo));
-
         localStorage.setItem("jnfuel_customer", JSON.stringify(customerInfo));
 
         setForm((previous) => ({
@@ -179,6 +221,17 @@ function CustomerDashboard() {
   const handleFormChange = (event) => {
     const { name, value } = event.target;
 
+    if (name === "aadhaarNumber") {
+      const digits = value.replace(/\D/g, "").slice(0, 12);
+
+      setForm((previous) => ({
+        ...previous,
+        aadhaarNumber: digits,
+      }));
+
+      return;
+    }
+
     if (name.startsWith("address.")) {
       const addressField = name.split(".")[1];
 
@@ -199,6 +252,8 @@ function CustomerDashboard() {
     }));
   };
 
+  /* SUBMIT APPLICATION */
+
   const handleApplicationSubmit = async (event) => {
     event.preventDefault();
 
@@ -215,6 +270,11 @@ function CustomerDashboard() {
 
     if (!form.applicantName.trim() || !form.mobile.trim()) {
       setError("Applicant name aur mobile number required hain.");
+      return;
+    }
+
+    if (!/^\d{12}$/.test(form.aadhaarNumber)) {
+      setError("Please enter a valid 12-digit Aadhaar number.");
       return;
     }
 
@@ -251,24 +311,20 @@ function CustomerDashboard() {
 
       if (!submittedApplication?.applicationNumber) {
         throw new Error(
-          "Application submit response mein application number nahi mila. Please refresh karke status check karein.",
+          "Application number response mein nahi mila. Please refresh karke status check karein.",
         );
       }
 
       setApplication(submittedApplication);
-
-      setCustomer((previous) => ({
-        ...previous,
-        applicationNumber: submittedApplication.applicationNumber,
-      }));
 
       const updatedCustomer = {
         ...customer,
         applicationNumber: submittedApplication.applicationNumber,
       };
 
-      localStorage.setItem("jnfuel_user", JSON.stringify(updatedCustomer));
+      setCustomer(updatedCustomer);
 
+      localStorage.setItem("jnfuel_user", JSON.stringify(updatedCustomer));
       localStorage.setItem("jnfuel_customer", JSON.stringify(updatedCustomer));
 
       localStorage.setItem(
@@ -291,7 +347,11 @@ function CustomerDashboard() {
   const formatDate = (date) => {
     if (!date) return "-";
 
-    return new Date(date).toLocaleDateString("en-IN", {
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) return "-";
+
+    return parsedDate.toLocaleDateString("en-IN", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -448,6 +508,7 @@ function CustomerDashboard() {
             alt="JN Fuel Logo"
             className="customer-logo-image"
           />
+
           <div>
             <h2>JNFuel</h2>
             <span>Partner Portal</span>
@@ -459,6 +520,7 @@ function CustomerDashboard() {
         <nav className="customer-menu">
           {menuItems.map((item) => (
             <button
+              type="button"
               key={item.name}
               className={
                 activeMenu === item.name
@@ -475,6 +537,7 @@ function CustomerDashboard() {
 
         <div className="customer-sidebar-bottom">
           <button
+            type="button"
             className="customer-menu-item"
             onClick={() =>
               alert("Please contact JNFuel administration for support.")
@@ -484,7 +547,11 @@ function CustomerDashboard() {
             Help & Support
           </button>
 
-          <button className="customer-menu-item" onClick={handleLogout}>
+          <button
+            type="button"
+            className="customer-menu-item"
+            onClick={handleLogout}
+          >
             <span>↪</span>
             Logout
           </button>
@@ -609,6 +676,25 @@ function CustomerDashboard() {
                       onChange={handleFormChange}
                     />
                   </label>
+
+                  {/* AADHAAR INPUT */}
+
+                  <label>
+                    Aadhaar Number *
+                    <input
+                      type="password"
+                      name="aadhaarNumber"
+                      value={form.aadhaarNumber}
+                      onChange={handleFormChange}
+                      placeholder="Enter 12-digit Aadhaar number"
+                      inputMode="numeric"
+                      maxLength={12}
+                      pattern="[0-9]{12}"
+                      autoComplete="off"
+                      required
+                    />
+                    <small>Enter 12 digits. Your number is hidden.</small>
+                  </label>
                 </div>
 
                 <h4>Business Details</h4>
@@ -725,12 +811,13 @@ function CustomerDashboard() {
             <section className="customer-welcome">
               <div>
                 <span className="welcome-label">APPLICATION STATUS</span>
-
                 <h2>{application.status}</h2>
-
                 <p>{getStatusText(application.status)}</p>
 
-                <button onClick={() => setActiveMenu("My Application")}>
+                <button
+                  type="button"
+                  onClick={() => setActiveMenu("My Application")}
+                >
                   View Application →
                 </button>
               </div>
@@ -748,9 +835,7 @@ function CustomerDashboard() {
 
                 <div className="certificate-card-content">
                   <span className="certificate-label">CERTIFICATE ISSUED</span>
-
                   <h3>Your JNFuel Certificate is Ready</h3>
-
                   <p>
                     Certificate No.{" "}
                     <strong>{application.certificateNumber}</strong>
@@ -759,6 +844,7 @@ function CustomerDashboard() {
 
                 <div className="certificate-card-actions">
                   <button
+                    type="button"
                     className="certificate-view-btn"
                     onClick={handleViewCertificate}
                   >
@@ -766,6 +852,7 @@ function CustomerDashboard() {
                   </button>
 
                   <button
+                    type="button"
                     className="certificate-download-btn"
                     onClick={handleDownloadCertificate}
                   >
@@ -832,7 +919,10 @@ function CustomerDashboard() {
                     <p>Your document verification status</p>
                   </div>
 
-                  <button onClick={() => setActiveMenu("Documents / KYC")}>
+                  <button
+                    type="button"
+                    onClick={() => setActiveMenu("Documents / KYC")}
+                  >
                     View All
                   </button>
                 </div>
@@ -895,9 +985,7 @@ function CustomerDashboard() {
             {!certificateIssued ? (
               <section className="certificate-empty-card">
                 <div className="certificate-empty-icon">⏳</div>
-
                 <h2>Certificate Not Issued Yet</h2>
-
                 <p>
                   Your certificate will become available here after your
                   application is approved.
@@ -908,7 +996,10 @@ function CustomerDashboard() {
                   <strong>{application.status}</strong>
                 </div>
 
-                <button onClick={() => setActiveMenu("Dashboard")}>
+                <button
+                  type="button"
+                  onClick={() => setActiveMenu("Dashboard")}
+                >
                   ← Back to Dashboard
                 </button>
               </section>
@@ -960,6 +1051,7 @@ function CustomerDashboard() {
 
                 <div className="certificate-actions">
                   <button
+                    type="button"
                     className="certificate-primary-btn"
                     onClick={handleViewCertificate}
                   >
@@ -967,6 +1059,7 @@ function CustomerDashboard() {
                   </button>
 
                   <button
+                    type="button"
                     className="certificate-secondary-btn"
                     onClick={handleDownloadCertificate}
                   >
@@ -1032,6 +1125,13 @@ function CustomerDashboard() {
                   <strong>{application.email || "-"}</strong>
                 </div>
 
+                {/* MASKED AADHAAR */}
+
+                <div>
+                  <span>Aadhaar Number</span>
+                  <strong>{maskAadhaar(application.aadhaarNumber)}</strong>
+                </div>
+
                 <div>
                   <span>Business Model</span>
                   <strong>{application.businessModel || "-"}</strong>
@@ -1050,6 +1150,7 @@ function CustomerDashboard() {
             </section>
           </div>
         )}
+
         {/* PAYMENT */}
 
         {application && activeMenu === "Payment" && (
@@ -1079,17 +1180,19 @@ function CustomerDashboard() {
         {/* OTHER SECTIONS */}
 
         {application &&
-          !["Dashboard", "Certificate", "My Application", "Agreement"].includes(
-            activeMenu,
-          ) && (
+          ![
+            "Dashboard",
+            "Certificate",
+            "My Application",
+            "Agreement",
+            "Payment",
+          ].includes(activeMenu) && (
             <div className="customer-coming">
               <div>⚙</div>
-
               <h2>{activeMenu}</h2>
-
               <p>This section UI will be added here.</p>
 
-              <button onClick={() => setActiveMenu("Dashboard")}>
+              <button type="button" onClick={() => setActiveMenu("Dashboard")}>
                 ← Back to Dashboard
               </button>
             </div>
