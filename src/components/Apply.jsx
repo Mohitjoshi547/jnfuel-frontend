@@ -275,20 +275,7 @@ function Apply() {
               </div>
 
               {/* Email */}
-
-              <div className="form-group">
-                <label>Email</label>
-
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter email address"
-                />
-              </div>
-            </div>
-            {/* Aadhaar Number */}
+               {/* Aadhaar Number */}
 
             <div className="form-group">
               <label>
@@ -317,6 +304,20 @@ function Apply() {
                 required
               />
             </div>
+
+              <div className="form-group">
+                <label>Email</label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter email address"
+                />
+              </div>
+            </div>
+           
           </section>
 
           {/* ================================================= */}
