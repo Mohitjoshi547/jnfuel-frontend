@@ -21,6 +21,10 @@ function AdminDashboard() {
 
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [showApplicationDetails, setShowApplicationDetails] = useState(false);
+  const [isEditingApplication, setIsEditingApplication] = useState(false);
+  const [savingApplication, setSavingApplication] = useState(false);
+
+  const [editForm, setEditForm] = useState({});
 
   /* ================= CERTIFICATE ================= */
 
@@ -422,13 +426,139 @@ function AdminDashboard() {
     setShowApplicationDetails(true);
   };
 
+  /* ================= EDIT APPLICATION ================= */
+
+  const startEditApplication = () => {
+    if (!selectedApplication) return;
+
+    setEditForm({
+      applicantName: selectedApplication.applicantName || "",
+      fatherName: selectedApplication.fatherName || "",
+      dateOfBirth: selectedApplication.dateOfBirth || "",
+      gender: selectedApplication.gender || "",
+      mobile: selectedApplication.mobile || "",
+      aadhaarNumber: selectedApplication.aadhaarNumber || "",
+      email: selectedApplication.email || "",
+
+      businessName: selectedApplication.businessName || "",
+      businessModel: selectedApplication.businessModel || "",
+      preferredLocation: selectedApplication.preferredLocation || "",
+
+      address: {
+        line: selectedApplication.address?.line || "",
+        villageTownCity: selectedApplication.address?.villageTownCity || "",
+        district: selectedApplication.address?.district || "",
+        state: selectedApplication.address?.state || "",
+        pinCode: selectedApplication.address?.pinCode || "",
+      },
+
+      remarks: selectedApplication.remarks || "",
+
+      payment: {
+        amount: selectedApplication.payment?.amount ?? "",
+        transactionId: selectedApplication.payment?.transactionId || "",
+        paymentDate: selectedApplication.payment?.paymentDate
+          ? String(selectedApplication.payment.paymentDate).slice(0, 10)
+          : "",
+        paymentMethod: selectedApplication.payment?.paymentMethod || "UPI",
+        screenshot: selectedApplication.payment?.screenshot || "",
+        rejectionReason: selectedApplication.payment?.rejectionReason || "",
+      },
+
+      paymentStatus: selectedApplication.paymentStatus || "Pending",
+      documentStatus: selectedApplication.documentStatus || "Pending",
+      fieldVerificationStatus:
+        selectedApplication.fieldVerificationStatus || "Pending",
+    });
+
+    setIsEditingApplication(true);
+  };
+
+  /* ================= EDIT FORM INPUT ================= */
+
+  const handleEditInput = (e) => {
+    const { name, value } = e.target;
+
+    setEditForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const handleEditNestedInput = (section, field, value) => {
+    setEditForm((current) => ({
+      ...current,
+      [section]: {
+        ...current[section],
+        [field]: value,
+      },
+    }));
+  };
+
+  /* ================= SAVE APPLICATION ================= */
+
+  const saveApplicationChanges = async (e) => {
+    e.preventDefault();
+
+    if (!selectedApplication) return;
+
+    try {
+      setSavingApplication(true);
+      setError("");
+
+      const response = await fetch(
+        `${API_BASE_URL}/api/applications/${selectedApplication._id}/edit`,
+        {
+          method: "PATCH",
+          headers: getAdminHeaders(),
+          body: JSON.stringify({
+            ...editForm,
+            payment: {
+              ...editForm.payment,
+              amount:
+                editForm.payment.amount === ""
+                  ? 0
+                  : Number(editForm.payment.amount),
+            },
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Application update nahi ho saki.");
+      }
+
+      setApplications((current) =>
+        current.map((application) =>
+          application._id === data.application._id
+            ? data.application
+            : application,
+        ),
+      );
+
+      setSelectedApplication(data.application);
+      setIsEditingApplication(false);
+
+      alert("Application details successfully update ho gayi hain!");
+    } catch (err) {
+      console.error("Save Application Error:", err);
+      setError(err.message || "Application update nahi ho saki.");
+      alert(err.message || "Application update nahi ho saki.");
+    } finally {
+      setSavingApplication(false);
+    }
+  };
+
   /* ================= CLOSE APPLICATION DETAILS ================= */
 
   const closeApplicationDetails = () => {
     setShowApplicationDetails(false);
     setSelectedApplication(null);
+    setIsEditingApplication(false);
+    setEditForm({});
   };
-
   /* ================= CERTIFICATE FORM ================= */
 
   const handleCertificateInput = (e) => {
@@ -1495,6 +1625,15 @@ function AdminDashboard() {
                 <h2 style={{ margin: "5px 0 0", color: "#071b45" }}>
                   {selectedApplication.applicationNumber}
                 </h2>
+                {!isEditingApplication && (
+                  <button
+                    type="button"
+                    onClick={startEditApplication}
+                    style={buttonStyles.primary}
+                  >
+                    ✎ Edit Application
+                  </button>
+                )}
               </div>
 
               <button
@@ -1509,293 +1648,527 @@ function AdminDashboard() {
             {/* MODAL BODY */}
 
             <div style={{ padding: "26px" }}>
-              {/* STATUS */}
+              {isEditingApplication && (
+                <form onSubmit={saveApplicationChanges}>
+                  <h3 style={modalStyles.cardTitle}>
+                    Edit Application Details
+                  </h3>
 
-              <div style={modalStyles.statusPanel}>
-                <div>
-                  <span style={modalStyles.fieldLabel}>CURRENT STATUS</span>
+                  <div style={modalStyles.twoColumnGrid}>
+                    {/* PERSONAL DETAILS */}
+                    <div style={modalStyles.card}>
+                      <h3 style={modalStyles.cardTitle}>Personal Details</h3>
 
-                  <span
-                    className={`status-badge ${getStatusClass(
-                      selectedApplication.status,
-                    )}`}
-                  >
-                    {selectedApplication.status || "Unknown"}
-                  </span>
-                </div>
+                      {[
+                        ["Applicant Name", "applicantName"],
+                        ["Father Name", "fatherName"],
+                        ["Date of Birth", "dateOfBirth"],
+                        ["Gender", "gender"],
+                        ["Mobile", "mobile"],
+                        ["Aadhaar Number", "aadhaarNumber"],
+                        ["Email", "email"],
+                      ].map(([label, name]) => (
+                        <div key={name} style={{ marginBottom: "14px" }}>
+                          <label style={cardStyles.label}>{label}</label>
+                          <input
+                            name={name}
+                            type={name === "dateOfBirth" ? "date" : "text"}
+                            value={editForm[name] || ""}
+                            onChange={handleEditInput}
+                            style={cardStyles.input}
+                          />
+                        </div>
+                      ))}
+                    </div>
 
-                <select
-                  value={selectedApplication.status || "Submitted"}
-                  disabled={updatingId === selectedApplication._id}
-                  onChange={(e) =>
-                    updateApplicationStatus(
-                      selectedApplication._id,
-                      e.target.value,
-                    )
-                  }
-                  style={buttonStyles.select}
-                >
-                  {statusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                    {/* BUSINESS DETAILS */}
+                    <div style={modalStyles.card}>
+                      <h3 style={modalStyles.cardTitle}>Business Details</h3>
 
-              {/* CUSTOMER AND BUSINESS DETAILS */}
+                      <label style={cardStyles.label}>Business Name</label>
+                      <input
+                        name="businessName"
+                        value={editForm.businessName}
+                        onChange={handleEditInput}
+                        style={cardStyles.input}
+                      />
 
-              <div style={modalStyles.twoColumnGrid}>
-                <div style={modalStyles.card}>
-                  <h3 style={modalStyles.cardTitle}>Customer Details</h3>
+                      <label style={cardStyles.label}>Business Model</label>
+                      <select
+                        name="businessModel"
+                        value={editForm.businessModel}
+                        onChange={handleEditInput}
+                        style={cardStyles.input}
+                      >
+                        <option value="">Select Model</option>
+                        <option value="FDP">FDP</option>
+                        <option value="Mini Pump">Mini Pump</option>
+                        <option value="Bowser">Bowser</option>
+                      </select>
 
-                  <DetailRow
-                    label="Applicant Name"
-                    value={selectedApplication.applicantName}
-                  />
-                  <DetailRow
-                    label="Father Name"
-                    value={selectedApplication.fatherName}
-                  />
-                  <DetailRow
-                    label="Date of Birth"
-                    value={selectedApplication.dateOfBirth}
-                  />
-                  <DetailRow
-                    label="Gender"
-                    value={selectedApplication.gender}
-                  />
-                  <DetailRow
-                    label="Mobile"
-                    value={selectedApplication.mobile}
-                  />
-                  <DetailRow label="Email" value={selectedApplication.email} />
-                </div>
-
-                <div style={modalStyles.card}>
-                  <h3 style={modalStyles.cardTitle}>Business Details</h3>
-
-                  <DetailRow
-                    label="Business Model"
-                    value={selectedApplication.businessModel}
-                  />
-                  <DetailRow
-                    label="Preferred Location"
-                    value={selectedApplication.preferredLocation}
-                  />
-                  <DetailRow
-                    label="Application Number"
-                    value={selectedApplication.applicationNumber}
-                  />
-                  <DetailRow
-                    label="Submitted On"
-                    value={
-                      selectedApplication.createdAt
-                        ? new Date(
-                            selectedApplication.createdAt,
-                          ).toLocaleString("en-IN")
-                        : "-"
-                    }
-                  />
-                </div>
-              </div>
-
-              {/* ADDRESS */}
-
-              <div style={modalStyles.cardSpaced}>
-                <h3 style={modalStyles.cardTitle}>Address</h3>
-
-                <div style={modalStyles.addressGrid}>
-                  <DetailRow
-                    label="Address"
-                    value={selectedApplication.address?.line}
-                  />
-                  <DetailRow
-                    label="Village / Town / City"
-                    value={selectedApplication.address?.villageTownCity}
-                  />
-                  <DetailRow
-                    label="District"
-                    value={selectedApplication.address?.district}
-                  />
-                  <DetailRow
-                    label="State"
-                    value={selectedApplication.address?.state}
-                  />
-                  <DetailRow
-                    label="PIN Code"
-                    value={selectedApplication.address?.pinCode}
-                  />
-                </div>
-              </div>
-
-              {/* PROCESS STATUS */}
-
-              <div style={modalStyles.cardSpaced}>
-                <h3 style={modalStyles.cardTitle}>Process Status</h3>
-
-                <div style={modalStyles.statusGrid}>
-                  <StatusBox
-                    title="Documents"
-                    value={selectedApplication.documentStatus}
-                  />
-                  <StatusBox
-                    title="Payment"
-                    value={selectedApplication.paymentStatus}
-                  />
-                  <StatusBox
-                    title="Field Verification"
-                    value={selectedApplication.fieldVerificationStatus}
-                  />
-                  <StatusBox
-                    title="Agreement"
-                    value={selectedApplication.agreementStatus}
-                  />
-                  <StatusBox
-                    title="Certificate"
-                    value={selectedApplication.certificateStatus}
-                  />
-                </div>
-              </div>
-
-              {/* REMARKS */}
-
-              <div style={modalStyles.cardSpaced}>
-                <h3 style={modalStyles.cardTitle}>Remarks</h3>
-
-                <p
-                  style={{
-                    marginBottom: 0,
-                    color: "#475467",
-                    lineHeight: "1.6",
-                  }}
-                >
-                  {selectedApplication.remarks || "No remarks added."}
-                </p>
-              </div>
-
-              {/* APPROVAL */}
-
-              <div
-                style={{
-                  ...modalStyles.approvalPanel,
-                  background:
-                    selectedApplication.status === "Approved"
-                      ? "#ecfdf3"
-                      : "#fff8ed",
-                  border:
-                    selectedApplication.status === "Approved"
-                      ? "1px solid #a7f3d0"
-                      : "1px solid #fed7aa",
-                }}
-              >
-                <h3 style={modalStyles.cardTitle}>Application Approval</h3>
-
-                <p style={{ color: "#667085", marginTop: 0 }}>
-                  {selectedApplication.status === "Approved"
-                    ? "This application has been approved."
-                    : "Review all customer details before approving the application."}
-                </p>
-
-                {selectedApplication.status !== "Approved" && (
-                  <button
-                    type="button"
-                    onClick={approveApplication}
-                    disabled={updatingId === selectedApplication._id}
-                    style={buttonStyles.primary}
-                  >
-                    {updatingId === selectedApplication._id
-                      ? "Approving..."
-                      : "✓ Approve Application"}
-                  </button>
-                )}
-              </div>
-
-              {/* CERTIFICATE DETAILS */}
-
-              {selectedApplication.status === "Approved" && (
-                <form
-                  onSubmit={issueCertificate}
-                  style={modalStyles.certificateForm}
-                >
-                  <span style={modalStyles.eyebrow}>CERTIFICATE</span>
-
-                  <h3 style={modalStyles.cardTitle}>Certificate Details</h3>
-
-                  <p style={{ color: "#667085", fontSize: "14px" }}>
-                    Ye details certificate template mein fill karne ke liye
-                    hain. Actual PDF generation ke liye backend endpoint connect
-                    hona chahiye.
-                  </p>
-
-                  <div style={modalStyles.certificateGrid}>
-                    <CertificateInput
-                      label="DP ID / License No."
-                      name="dpId"
-                      value={certificateForm.dpId}
-                      onChange={handleCertificateInput}
-                      placeholder="e.g. JNF-DP-001"
-                    />
-
-                    <CertificateInput
-                      label="Certificate No."
-                      name="certificateNumber"
-                      value={certificateForm.certificateNumber}
-                      onChange={handleCertificateInput}
-                      placeholder="e.g. JNF-CERT-001"
-                    />
-
-                    <CertificateInput
-                      label="Valid Up To"
-                      name="validUpTo"
-                      type="date"
-                      value={certificateForm.validUpTo}
-                      onChange={handleCertificateInput}
-                    />
-
-                    <CertificateInput
-                      label="Authorized Area"
-                      name="authorizedArea"
-                      value={certificateForm.authorizedArea}
-                      onChange={handleCertificateInput}
-                      placeholder="Authorized area"
-                    />
+                      <label style={cardStyles.label}>Preferred Location</label>
+                      <input
+                        name="preferredLocation"
+                        value={editForm.preferredLocation}
+                        onChange={handleEditInput}
+                        style={cardStyles.input}
+                      />
+                    </div>
                   </div>
 
-                  <div style={{ marginTop: "18px" }}>
-                    <label style={cardStyles.label}>Remarks</label>
+                  {/* ADDRESS */}
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Address Details</h3>
+
+                    <div style={modalStyles.addressGrid}>
+                      {[
+                        ["Address", "line"],
+                        ["Village / Town / City", "villageTownCity"],
+                        ["District", "district"],
+                        ["State", "state"],
+                        ["PIN Code", "pinCode"],
+                      ].map(([label, field]) => (
+                        <div key={field}>
+                          <label style={cardStyles.label}>{label}</label>
+                          <input
+                            value={editForm.address?.[field] || ""}
+                            onChange={(e) =>
+                              handleEditNestedInput(
+                                "address",
+                                field,
+                                e.target.value,
+                              )
+                            }
+                            style={cardStyles.input}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* PAYMENT DETAILS */}
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Payment Details</h3>
+
+                    <div style={modalStyles.addressGrid}>
+                      {[
+                        ["Amount", "amount", "number"],
+                        ["Transaction ID", "transactionId", "text"],
+                        ["Payment Date", "paymentDate", "date"],
+                        ["Payment Method", "paymentMethod", "text"],
+                        ["Screenshot URL", "screenshot", "text"],
+                        ["Rejection Reason", "rejectionReason", "text"],
+                      ].map(([label, field, type]) => (
+                        <div key={field}>
+                          <label style={cardStyles.label}>{label}</label>
+                          <input
+                            type={type}
+                            value={editForm.payment?.[field] ?? ""}
+                            onChange={(e) =>
+                              handleEditNestedInput(
+                                "payment",
+                                field,
+                                e.target.value,
+                              )
+                            }
+                            style={cardStyles.input}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* WORKFLOW DETAILS */}
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Verification Status</h3>
+
+                    {[
+                      {
+                        label: "Payment Status",
+                        name: "paymentStatus",
+                        options: [
+                          "Pending",
+                          "Submitted",
+                          "Verified",
+                          "Rejected",
+                        ],
+                      },
+                      {
+                        label: "Document Status",
+                        name: "documentStatus",
+                        options: [
+                          "Pending",
+                          "Under Verification",
+                          "Verified",
+                          "Rejected",
+                        ],
+                      },
+                      {
+                        label: "Field Verification",
+                        name: "fieldVerificationStatus",
+                        options: [
+                          "Pending",
+                          "Scheduled",
+                          "Completed",
+                          "Rejected",
+                        ],
+                      },
+                    ].map((item) => (
+                      <div key={item.name} style={{ marginBottom: "14px" }}>
+                        <label style={cardStyles.label}>{item.label}</label>
+
+                        <select
+                          value={editForm[item.name]}
+                          onChange={handleEditInput}
+                          name={item.name}
+                          style={cardStyles.input}
+                        >
+                          {item.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* REMARKS */}
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Remarks</h3>
 
                     <textarea
                       name="remarks"
-                      value={certificateForm.remarks}
-                      onChange={handleCertificateInput}
-                      rows="4"
-                      placeholder="Certificate remarks"
-                      style={{
-                        ...cardStyles.input,
-                        resize: "vertical",
-                      }}
+                      value={editForm.remarks}
+                      onChange={handleEditInput}
+                      rows={4}
+                      style={{ ...cardStyles.input, resize: "vertical" }}
                     />
                   </div>
 
-                  <div style={modalStyles.qrNotice}>
-                    <strong>QR Verification:</strong> Certificate issue hone par
-                    system ko unique QR generate karna hoga. QR scan karne par
-                    verified details public verification page par show hongi.
+                  {/* BUTTONS */}
+                  <div
+                    style={{ display: "flex", gap: "12px", marginTop: "22px" }}
+                  >
+                    <button
+                      type="submit"
+                      disabled={savingApplication}
+                      style={{
+                        ...buttonStyles.primary,
+                        opacity: savingApplication ? 0.7 : 1,
+                      }}
+                    >
+                      {savingApplication ? "Saving..." : "Save Changes"}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingApplication(false)}
+                      disabled={savingApplication}
+                      style={buttonStyles.secondary}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+              {!isEditingApplication && (
+                <>
+                  {/* STATUS */}
+
+                  <div style={modalStyles.statusPanel}>
+                    <div>
+                      <span style={modalStyles.fieldLabel}>CURRENT STATUS</span>
+
+                      <span
+                        className={`status-badge ${getStatusClass(
+                          selectedApplication.status,
+                        )}`}
+                      >
+                        {selectedApplication.status || "Unknown"}
+                      </span>
+                    </div>
+
+                    <select
+                      value={selectedApplication.status || "Submitted"}
+                      disabled={updatingId === selectedApplication._id}
+                      onChange={(e) =>
+                        updateApplicationStatus(
+                          selectedApplication._id,
+                          e.target.value,
+                        )
+                      }
+                      style={buttonStyles.select}
+                    >
+                      {statusOptions.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={certificateLoading}
+                  {/* CUSTOMER AND BUSINESS DETAILS */}
+
+                  <div style={modalStyles.twoColumnGrid}>
+                    <div style={modalStyles.card}>
+                      <h3 style={modalStyles.cardTitle}>Customer Details</h3>
+
+                      <DetailRow
+                        label="Applicant Name"
+                        value={selectedApplication.applicantName}
+                      />
+                      <DetailRow
+                        label="Father Name"
+                        value={selectedApplication.fatherName}
+                      />
+                      <DetailRow
+                        label="Date of Birth"
+                        value={selectedApplication.dateOfBirth}
+                      />
+                      <DetailRow
+                        label="Gender"
+                        value={selectedApplication.gender}
+                      />
+                      <DetailRow
+                        label="Mobile"
+                        value={selectedApplication.mobile}
+                      />
+                      <DetailRow
+                        label="Email"
+                        value={selectedApplication.email}
+                      />
+                    </div>
+
+                    <div style={modalStyles.card}>
+                      <h3 style={modalStyles.cardTitle}>Business Details</h3>
+
+                      <DetailRow
+                        label="Business Model"
+                        value={selectedApplication.businessModel}
+                      />
+                      <DetailRow
+                        label="Preferred Location"
+                        value={selectedApplication.preferredLocation}
+                      />
+                      <DetailRow
+                        label="Application Number"
+                        value={selectedApplication.applicationNumber}
+                      />
+                      <DetailRow
+                        label="Submitted On"
+                        value={
+                          selectedApplication.createdAt
+                            ? new Date(
+                                selectedApplication.createdAt,
+                              ).toLocaleString("en-IN")
+                            : "-"
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {/* ADDRESS */}
+
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Address</h3>
+
+                    <div style={modalStyles.addressGrid}>
+                      <DetailRow
+                        label="Address"
+                        value={selectedApplication.address?.line}
+                      />
+                      <DetailRow
+                        label="Village / Town / City"
+                        value={selectedApplication.address?.villageTownCity}
+                      />
+                      <DetailRow
+                        label="District"
+                        value={selectedApplication.address?.district}
+                      />
+                      <DetailRow
+                        label="State"
+                        value={selectedApplication.address?.state}
+                      />
+                      <DetailRow
+                        label="PIN Code"
+                        value={selectedApplication.address?.pinCode}
+                      />
+                    </div>
+                  </div>
+
+                  {/* PROCESS STATUS */}
+
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Process Status</h3>
+
+                    <div style={modalStyles.statusGrid}>
+                      <StatusBox
+                        title="Documents"
+                        value={selectedApplication.documentStatus}
+                      />
+                      <StatusBox
+                        title="Payment"
+                        value={selectedApplication.paymentStatus}
+                      />
+                      <StatusBox
+                        title="Field Verification"
+                        value={selectedApplication.fieldVerificationStatus}
+                      />
+                      <StatusBox
+                        title="Agreement"
+                        value={selectedApplication.agreementStatus}
+                      />
+                      <StatusBox
+                        title="Certificate"
+                        value={selectedApplication.certificateStatus}
+                      />
+                    </div>
+                  </div>
+
+                  {/* REMARKS */}
+
+                  <div style={modalStyles.cardSpaced}>
+                    <h3 style={modalStyles.cardTitle}>Remarks</h3>
+
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        color: "#475467",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      {selectedApplication.remarks || "No remarks added."}
+                    </p>
+                  </div>
+
+                  {/* APPROVAL */}
+
+                  <div
                     style={{
-                      ...buttonStyles.orange,
-                      marginTop: "20px",
-                      opacity: certificateLoading ? 0.7 : 1,
+                      ...modalStyles.approvalPanel,
+                      background:
+                        selectedApplication.status === "Approved"
+                          ? "#ecfdf3"
+                          : "#fff8ed",
+                      border:
+                        selectedApplication.status === "Approved"
+                          ? "1px solid #a7f3d0"
+                          : "1px solid #fed7aa",
                     }}
                   >
-                    {certificateLoading ? "Processing..." : "Issue Certificate"}
-                  </button>
-                </form>
+                    <h3 style={modalStyles.cardTitle}>Application Approval</h3>
+
+                    <p style={{ color: "#667085", marginTop: 0 }}>
+                      {selectedApplication.status === "Approved"
+                        ? "This application has been approved."
+                        : "Review all customer details before approving the application."}
+                    </p>
+
+                    {selectedApplication.status !== "Approved" && (
+                      <button
+                        type="button"
+                        onClick={approveApplication}
+                        disabled={updatingId === selectedApplication._id}
+                        style={buttonStyles.primary}
+                      >
+                        {updatingId === selectedApplication._id
+                          ? "Approving..."
+                          : "✓ Approve Application"}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* CERTIFICATE DETAILS */}
+
+                  {selectedApplication.status === "Approved" && (
+                    <form
+                      onSubmit={issueCertificate}
+                      style={modalStyles.certificateForm}
+                    >
+                      <span style={modalStyles.eyebrow}>CERTIFICATE</span>
+
+                      <h3 style={modalStyles.cardTitle}>Certificate Details</h3>
+
+                      <p style={{ color: "#667085", fontSize: "14px" }}>
+                        Ye details certificate template mein fill karne ke liye
+                        hain. Actual PDF generation ke liye backend endpoint
+                        connect hona chahiye.
+                      </p>
+
+                      <div style={modalStyles.certificateGrid}>
+                        <CertificateInput
+                          label="DP ID / License No."
+                          name="dpId"
+                          value={certificateForm.dpId}
+                          onChange={handleCertificateInput}
+                          placeholder="e.g. JNF-DP-001"
+                        />
+
+                        <CertificateInput
+                          label="Certificate No."
+                          name="certificateNumber"
+                          value={certificateForm.certificateNumber}
+                          onChange={handleCertificateInput}
+                          placeholder="e.g. JNF-CERT-001"
+                        />
+
+                        <CertificateInput
+                          label="Valid Up To"
+                          name="validUpTo"
+                          type="date"
+                          value={certificateForm.validUpTo}
+                          onChange={handleCertificateInput}
+                        />
+
+                        <CertificateInput
+                          label="Authorized Area"
+                          name="authorizedArea"
+                          value={certificateForm.authorizedArea}
+                          onChange={handleCertificateInput}
+                          placeholder="Authorized area"
+                        />
+                      </div>
+
+                      <div style={{ marginTop: "18px" }}>
+                        <label style={cardStyles.label}>Remarks</label>
+
+                        <textarea
+                          name="remarks"
+                          value={certificateForm.remarks}
+                          onChange={handleCertificateInput}
+                          rows="4"
+                          placeholder="Certificate remarks"
+                          style={{
+                            ...cardStyles.input,
+                            resize: "vertical",
+                          }}
+                        />
+                      </div>
+
+                      <div style={modalStyles.qrNotice}>
+                        <strong>QR Verification:</strong> Certificate issue hone
+                        par system ko unique QR generate karna hoga. QR scan
+                        karne par verified details public verification page par
+                        show hongi.
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={certificateLoading}
+                        style={{
+                          ...buttonStyles.orange,
+                          marginTop: "20px",
+                          opacity: certificateLoading ? 0.7 : 1,
+                        }}
+                      >
+                        {certificateLoading
+                          ? "Processing..."
+                          : "Issue Certificate"}
+                      </button>
+                    </form>
+                  )}
+                </>
               )}
             </div>
           </div>
